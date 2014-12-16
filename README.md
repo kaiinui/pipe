@@ -3,6 +3,19 @@ pipe
 
 A simple web app to pipe GET / POST request to fluentd.
 
+- [Usage](#usage)
+  - [via POST-ing JSON](#via-post-ing-json)
+  - [via GET-ing .gif](#via-get-ing-gif)
+- [Specification](#specification)
+  - [Endpoints](#endpoints)
+    - [POST /p](#post-p)
+    - [GET /p.gif](#get-p-gif)
+  - [Entity](#entity)
+    - [Event](#event)
+      - [Example](#example)
+
+## Usage
+
 ### via POST-ing JSON
 
 ```
