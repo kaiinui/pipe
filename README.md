@@ -19,7 +19,8 @@ A simple web app to pipe GET / POST request to fluentd.
 ### via POST-ing JSON
 
 ```
-POST /p
+POST /e
+Content-Type: application/json
 
 {
     "some": "data"
@@ -31,7 +32,8 @@ Passes posted JSON data to fluentd.
 To pass multiple events to fluentd, just do as follows.
 
 ```
-POST /p
+POST /e
+Content-Type: application/json
 
 [
     {
@@ -48,12 +50,12 @@ POST /p
 For CORS, logging via GET-ing `img` is provided.
 
 ```html
-<img src='https://pipe.example.com/p.gif?data={\"some\":\"data\"}' />
+<img src='https://pipe.example.com/e.gif?data={\"some\":\"data\"}' />
 ```
 
 Results following request
 
-`GET /p.gif?data={\"some\":\"data\"}`
+`GET /e.gif?data={\"some\":\"data\"}`
 
 which logs following JSON data.
 
@@ -68,7 +70,7 @@ Specification
 
 ### Endpoints
 
-#### `POST /p`
+#### `POST /e`
 
 - Params: NO PARAMS REQUIRED
 - Body: 
@@ -83,7 +85,7 @@ $: Event
   - 422 Unprocessable Entity
     - Body: NO_CONTENT
 
-#### `GET /p.gif`
+#### `GET /e.gif`
 
 - Params:
   - `data`: URL encoded JSON that conforms to [Event](#event) format
