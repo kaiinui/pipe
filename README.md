@@ -50,7 +50,7 @@ Content-Type: application/json
 For CORS, logging via GET-ing `img` is provided.
 
 ```html
-<img src='https://pipe.example.com/e.gif?data={\"some\":\"data\"}' />
+<img src='https://pipe.example.com/e.gif?data={"some":"data"}' />
 ```
 
 Results following request
