@@ -1,0 +1,14 @@
+vm: true
+runtime: custom
+api_version: 1
+network:
+  instance_tag: "pipe"
+health_check:
+  enable_health_check: False
+manual_scaling:
+  instances: 1
+
+handlers:
+- url: .*
+  script: main
+

@@ -7,6 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"compress/gzip"
+	"io"
+	"bytes"
 )
 
 func main() {
@@ -15,7 +18,7 @@ func main() {
 	if err != nil {
 		panic("Could not find fluentd.")
 	}
-	port := "3000"
+	port := "8080"
 	fmt.Println("Pipe has found fluentd and starting the server at port: " + port + " ...")
 	tag := "com.kaiinui.pipe"
 
@@ -57,6 +60,10 @@ func main() {
 		res.Header().Set("Cache-Control", "nocache")
 	})
 
+	http.HandleFunc("/_ah/health", func(res http.ResponseWriter, req *http.Request) {
+		res.Write([]byte("ok"))
+	})
+
 	http.ListenAndServe(":"+port, nil)
 }
 
@@ -74,11 +81,26 @@ func getJsonFromUnescapedString(encodedJson string) (interface{}, error) {
 	return data, nil
 }
 
+var _tgif = []byte("\x1f\x8b\x08\x00\x00\x09\x6e\x88\x00\xff\x72\xf7\x74\xb3\xb0\x4c\x64\x64\x60\x64\x68\x60\x00\x81\xff\xff\xff\x2b\xfe\x64\x61\x04\x31\x75\x40\x04\x48\x86\x81\x89\xd1\x85\xc1\x1a\x10\x00\x00\xff\xff\x78\x13\x95\x27\x2a\x00\x00\x00")
+
 func tgif() []byte {
-	dat, err := ioutil.ReadFile("1x1.gif")
+	data, _ := bindata_read(_tgif, "1x1.gif")
+	return data
+}
+
+func bindata_read(data []byte, name string) ([]byte, error) {
+	gz, err := gzip.NewReader(bytes.NewBuffer(data))
 	if err != nil {
-		fmt.Println(err)
+		return nil, fmt.Errorf("Read %q: %v", name, err)
 	}
 
-	return dat
+	var buf bytes.Buffer
+	_, err = io.Copy(&buf, gz)
+	gz.Close()
+
+	if err != nil {
+		return nil, fmt.Errorf("Read %q: %v", name, err)
+	}
+
+	return buf.Bytes(), nil
 }
